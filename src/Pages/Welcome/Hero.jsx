@@ -109,11 +109,11 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                 <p className="text-2xl md:text-3xl text-gray-900 leading-relaxed max-w-2xl font-normal">
                   Découvrez notre réseau de 
                   <span className="font-bold text-emerald-700"> techniciens qualifiés</span> 
-                  disponibles près de chez vous pour tous vos projets de 
+                  <span> disponibles près de chez vous pour tous vos projets de </span>
                   <span className="font-bold text-green-700"> réparation et rénovation</span>.
                 </p>
               </motion.div>
-              
+
             </div>
 
             {/* Barre de recherche améliorée */}

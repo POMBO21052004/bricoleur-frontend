@@ -1,23 +1,23 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Pages d'authentification
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
-import VerifyEmail from "../pages/Auth/VerifyEmail";
-import ForgotPassword from "../pages/Auth/ForgotPassword";
-import ResetPassword from "../pages/Auth/ResetPassword";
+import Login from "../Pages/Auth/Login";
+import Register from "../Pages/Auth/Register";
+import VerifyEmail from "../Pages/Auth/VerifyEmail";
+import ForgotPassword from "../Pages/Auth/ForgotPassword";
+import ResetPassword from "../Pages/Auth/ResetPassword";
 
 // Pages principales
-import Welcome from "../pages/Welcome/Welcome";
-import Dashboard from "../pages/Client/Dashboard/Index";
-// import Profile from "../pages/Client/Profile/Index";
-// import Technicians from "../pages/Client/Technicians/Index";
-// import TechnicianDetail from "../pages/Client/Technicians/TechnicianDetail";
+import Welcome from "../Pages/Welcome/Welcome";
+import Dashboard from "../Pages/Client/Dashboard/Index";
+// import Profile from "../Pages/Client/Profile/Index";
+// import Technicians from "../Pages/Client/Technicians/Index";
+// import TechnicianDetail from "../Pages/Client/Technicians/TechnicianDetail";
 
 // Composants de routage
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
-import NotFound from "../pages/NotFound";
+import NotFound from "../Pages/NotFound";
 import TechnicianDetail from "../Pages/Client/Techniciens/TechnicianDetail";
 
 export default function AppRouter() {

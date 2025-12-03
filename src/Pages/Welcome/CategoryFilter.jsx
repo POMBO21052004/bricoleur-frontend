@@ -9,13 +9,23 @@ const categories = [
   { id: 'plumber', label: 'Plombier', value: 'plumber', color: 'from-emerald-500 to-green-600' },
   { id: 'hvac', label: 'Climatisation', value: 'hvac', color: 'from-emerald-500 to-green-600' },
   { id: 'carpenter', label: 'Menuisier', value: 'carpenter', color: 'from-emerald-500 to-green-600' },
-  { id: 'mechanic', label: 'Mécanicien', value: 'mechanic', color: 'from-emerald-500 to-green-600' },
+  { id: 'mechanician', label: 'Mécanicien', value: 'mechanic', color: 'from-emerald-500 to-green-600' },
   { id: 'painter', label: 'Peintre', value: 'painter', color: 'from-emerald-500 to-green-600' },
   { id: 'gardener', label: 'Jardinier', value: 'gardener', color: 'from-emerald-500 to-green-600' },
   { id: 'cleaner', label: 'Nettoyage', value: 'cleaner', color: 'from-emerald-500 to-green-600' },
   { id: 'locksmith', label: 'Serrurier', value: 'locksmith', color: 'from-emerald-500 to-green-600' },
   { id: 'roofer', label: 'Couverture', value: 'roofer', color: 'from-emerald-500 to-green-600' },
-  { id: 'welder', label: 'Soudeur', value: 'welder', color: 'from-emerald-500 to-green-600' }
+  { id: 'welder', label: 'Soudeur', value: 'welder', color: 'from-emerald-500 to-green-600' },
+
+   { id: 'mason', label: 'Maçon', value: 'mason', color: 'from-emerald-500 to-green-600' },
+  { id: 'landscaper', label: 'Paysagiste', value: 'landscaper', color: 'from-emerald-500 to-green-600' },
+  { id: 'plasterer', label: 'Plâtrier', value: 'plasterer', color: 'from-emerald-500 to-green-600' },
+  { id: 'tiler', label: 'Carreleur', value: 'tiler', color: 'from-emerald-500 to-green-600' },
+  { id: 'fencer', label: 'Clôturier', value: 'fencer', color: 'from-emerald-500 to-green-600' },
+  { id: 'pest_control', label: 'Désinsectisation', value: 'pest_control', color: 'from-emerald-500 to-green-600' },
+  { id: 'security', label: 'Sécurité', value: 'security', color: 'from-emerald-500 to-green-600' },
+  { id: 'moving', label: 'Déménageur', value: 'moving', color: 'from-emerald-500 to-green-600' },
+  { id: 'other', label: 'Autre', value: 'other', color: 'from-emerald-500 to-green-600' }
 ];
 
 export default function CategoryFilter({ selectedCategory, setSelectedCategory }) {
