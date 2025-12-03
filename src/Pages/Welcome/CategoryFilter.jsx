@@ -15,7 +15,7 @@ const categories = [
   { id: 'cleaner', label: 'Nettoyage', value: 'cleaner', color: 'from-emerald-500 to-green-600' },
   { id: 'locksmith', label: 'Serrurier', value: 'locksmith', color: 'from-emerald-500 to-green-600' },
   { id: 'roofer', label: 'Couverture', value: 'roofer', color: 'from-emerald-500 to-green-600' },
-  { id: 'welder', label: 'Soudeur', value: 'welder', color: 'from-emerald-500 to-green-600' }
+  { id: 'welder', label: 'Soudeur', value: 'welder', color: 'from-emerald-500 to-green-600' },
 
    { id: 'mason', label: 'Maçon', value: 'mason', color: 'from-emerald-500 to-green-600' },
   { id: 'landscaper', label: 'Paysagiste', value: 'landscaper', color: 'from-emerald-500 to-green-600' },
