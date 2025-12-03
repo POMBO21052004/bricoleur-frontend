@@ -96,7 +96,7 @@ export default function Header() {
                 <span className="text-xl font-bold bg-gradient-to-r from-gray-800 to-emerald-700 bg-clip-text text-transparent">
                   Le Bricoleur
                 </span>
-                <span className="text-emerald-300 text-sm">Votre partenaire de confiance</span>
+                {/* <span className="text-emerald-300 text-sm">Votre partenaire de confiance</span> */}
               </div>
             </Link>
           </motion.div>

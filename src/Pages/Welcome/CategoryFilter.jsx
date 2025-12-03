@@ -17,7 +17,7 @@ const categories = [
   { id: 'roofer', label: 'Couverture', value: 'roofer', color: 'from-emerald-500 to-green-600' },
   { id: 'welder', label: 'Soudeur', value: 'welder', color: 'from-emerald-500 to-green-600' },
 
-   { id: 'mason', label: 'Maçon', value: 'mason', color: 'from-emerald-500 to-green-600' },
+  { id: 'mason', label: 'Maçon', value: 'mason', color: 'from-emerald-500 to-green-600' },
   { id: 'landscaper', label: 'Paysagiste', value: 'landscaper', color: 'from-emerald-500 to-green-600' },
   { id: 'plasterer', label: 'Plâtrier', value: 'plasterer', color: 'from-emerald-500 to-green-600' },
   { id: 'tiler', label: 'Carreleur', value: 'tiler', color: 'from-emerald-500 to-green-600' },
