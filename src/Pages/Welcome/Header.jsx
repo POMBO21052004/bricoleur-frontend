@@ -93,7 +93,7 @@ export default function Header() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold bg-gradient-to-r from-gray-800 to-emerald-700 bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-gradient-to-r from-gray-800 to-emerald-700 bg-clip-text text-transparent hidden md:block">
                   Le Bricoleur
                 </span>
                 <span className="text-emerald-300 text-sm hidden md:block">
