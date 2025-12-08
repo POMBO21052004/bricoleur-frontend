@@ -1,4 +1,4 @@
-// ContactForm.jsx - Version améliorée
+// ContactForm.jsx - Version améliorée sans ombres
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, X, Loader, Send, MessageCircle, Phone, Mail } from 'lucide-react';
@@ -19,7 +19,7 @@ const InputField = ({ label, name, type = 'text', required = false, value, onCha
         whileFocus={{ scale: 1.02 }}
         name={name}
         required={required}
-        className="w-full px-4 py-4 rounded-2xl border-2 border-emerald-200 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all duration-300 h-32 text-sm shadow-sm hover:shadow-md focus:shadow-lg"
+        className="w-full px-4 py-4 rounded-2xl border-2 border-emerald-200 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all duration-300 h-32 text-sm"
         placeholder={`Décrivez votre projet ou demande...`}
         value={value}
         onChange={onChange}
@@ -30,7 +30,7 @@ const InputField = ({ label, name, type = 'text', required = false, value, onCha
         type={type}
         name={name}
         required={required}
-        className="w-full px-4 py-4 rounded-2xl border-2 border-emerald-200 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all duration-300 text-sm shadow-sm hover:shadow-md focus:shadow-lg"
+        className="w-full px-4 py-4 rounded-2xl border-2 border-emerald-200 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all duration-300 text-sm"
         placeholder={`Votre ${label.toLowerCase()}...`}
         value={value}
         onChange={onChange}
@@ -148,7 +148,7 @@ const ContactForm = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05, x: 10 }}
-                className="flex items-center space-x-4 p-6 bg-white rounded-2xl border-2 border-emerald-100 hover:border-emerald-300 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                className="flex items-center space-x-4 p-6 bg-white rounded-2xl border-2 border-emerald-100 hover:border-emerald-300 transition-all duration-300 group"
               >
                 <div className="p-3 bg-emerald-100 rounded-xl group-hover:bg-emerald-500 transition-colors duration-300">
                   <method.icon className="w-6 h-6 text-emerald-600 group-hover:text-white" />
@@ -168,7 +168,7 @@ const ContactForm = () => {
             viewport={{ once: true }}
             className="lg:col-span-2"
           >
-            <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12 border border-emerald-100">
+            <div className="bg-white rounded-3xl p-8 lg:p-12 border border-emerald-100">
               <AnimatePresence mode="wait">
                 {submitStatus === 'success' ? (
                   <motion.div 
@@ -294,7 +294,7 @@ const ContactForm = () => {
                       whileTap={{ scale: 0.98 }}
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center text-lg shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>

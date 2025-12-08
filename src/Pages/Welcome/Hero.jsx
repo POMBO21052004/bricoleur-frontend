@@ -31,10 +31,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
       animate={{ opacity: 1 }}
       className="pt-20 w-full relative overflow-hidden min-h-screen flex items-end lg:items-center"
       style={{
-        backgroundImage: `url(${heroBackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundColor: '#B6E9D4', 
       }}
     >
       {/* Overlay gradient amélioré */}

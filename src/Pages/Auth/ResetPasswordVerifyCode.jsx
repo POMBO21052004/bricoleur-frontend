@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Sparkles, RefreshCw } from "lucide-react";
+import { motion } from "framer-motion";
 import api from "../../services/api";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import logo from '../../assets/images2/bricoleur.png';
 
 export default function ResetPasswordVerifyCodePage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [resending, setResending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -16,17 +18,18 @@ export default function ResetPasswordVerifyCodePage() {
     e.preventDefault();
     
     if (!code.trim()) {
-      setError("Veuillez entrer le code de vérification.");
+      toast.error("Veuillez entrer le code de vérification.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
       return;
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       const response = await api.post("/manage_users/password-reset-confirm/", { code });
       
-      // Stocker le token et uidb64 pour la page suivante
       if (response.data.token && response.data.uidb64) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("uidb64", response.data.uidb64);
@@ -45,7 +48,6 @@ export default function ResetPasswordVerifyCodePage() {
       console.error("Verification failed:", error);
       const errorMessage = error.response?.data?.message || 
                           "Code invalide ou erreur réseau.";
-      setError(errorMessage);
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 4000,
@@ -56,6 +58,7 @@ export default function ResetPasswordVerifyCodePage() {
   };
 
   const handleResendCode = async () => {
+    setResending(true);
     try {
       const email = localStorage.getItem("resetEmail");
       if (email) {
@@ -76,36 +79,50 @@ export default function ResetPasswordVerifyCodePage() {
         position: "top-right",
         autoClose: 4000,
       });
+    } finally {
+      setResending(false);
     }
   };
 
   return (
     <>
       <ToastContainer />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-          <Link to="/login" className="inline-flex items-center text-sm text-green-600 hover:text-green-700 mb-6">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Retour à la connexion
-          </Link>
-
-          <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="h-6 w-6 text-green-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 border border-emerald-100">
+          {/* Logo Header */}
+          <div className="mb-6">
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              <div className="w-12 h-12 rounded-lg overflow-hidden">
+                <img 
+                  src={logo}
+                  alt="Le Bricoleur"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="text-center">
+                <h1 className="text-xl font-bold text-gray-900">Le Bricoleur</h1>
+                <p className="text-sm text-gray-600">Services professionnels</p>
+              </div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Vérification du code</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Entrez le code de vérification envoyé à votre email pour réinitialiser votre mot de passe
-            </p>
+            
+            <div className="mb-4 text-center">
+              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail className="h-8 w-8 text-emerald-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Vérification du code</h2>
+              <p className="text-gray-600 text-sm">
+                Entrez le code de vérification envoyé à votre email
+              </p>
+            </div>
           </div>
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm">{error}</p>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Formulaire */}
+          <motion.form 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            onSubmit={handleSubmit} 
+            className="space-y-4"
+          >
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
                 Code de vérification
@@ -116,39 +133,66 @@ export default function ResetPasswordVerifyCodePage() {
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="123456"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center text-lg font-mono tracking-widest"
+                className="w-full px-3 py-3 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 text-center text-lg font-mono tracking-widest"
                 required
               />
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
               {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  Vérification...
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Vérification...</span>
                 </div>
               ) : (
-                "Vérifier le code"
+                <span className="flex items-center justify-center space-x-2">
+                  <Sparkles className="w-5 h-5" />
+                  <span>Vérifier le code</span>
+                </span>
               )}
-            </button>
-          </form>
+            </motion.button>
+          </motion.form>
 
+          {/* Bouton renvoyer */}
           <div className="mt-4 text-center">
             <button
               type="button"
               onClick={handleResendCode}
-              className="text-sm text-green-600 hover:text-green-700"
+              disabled={resending}
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center space-x-2"
             >
-              Vous n'avez pas reçu le code? Renvoyer
+              {resending ? (
+                <>
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  <span>Envoi en cours...</span>
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="h-4 w-4" />
+                  <span>Vous n'avez pas reçu le code ? Renvoyer</span>
+                </>
+              )}
             </button>
+          </div>
+
+          {/* Lien retour */}
+          <div className="mt-6 text-center">
+            <Link 
+              to="/login" 
+              className="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Retour à la connexion
+            </Link>
           </div>
         </div>
       </div>
     </>
   );
 }
-

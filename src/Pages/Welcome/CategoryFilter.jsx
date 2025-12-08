@@ -74,10 +74,8 @@ export default function CategoryFilter({ selectedCategory, setSelectedCategory }
         
         {/* Boutons de navigation améliorés */}
         <motion.button
-        //   whileHover={{ scale: 1.1, x: -2 }}
-        //   whileTap={{ scale: 0.9 }}
           onClick={scrollLeft}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 z-20 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-2xl p-2 shadow-lg hover:shadow-xl transition-all duration-300 group"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 z-20 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-2xl p-2 transition-all duration-300 group" // SUPPRIMEZ shadow-lg hover:shadow-xl
         >
           <ChevronLeft className="w-4 h-4 text-emerald-600 group-hover:text-emerald-700" />
         </motion.button>
