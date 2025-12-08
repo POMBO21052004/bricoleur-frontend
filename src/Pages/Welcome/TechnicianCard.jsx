@@ -19,7 +19,7 @@ export default function TechnicianCard({ tech, professionLabels }) {
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="bg-white rounded-2xl border border-emerald-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 overflow-hidden group"
+      className="bg-white rounded-2xl border border-emerald-100 hover:border-emerald-300 transition-all duration-300 overflow-hidden group h-full flex flex-col" 
     >
       {/* En-tête avec image et badges */}
       <div className="relative h-40 overflow-hidden">
@@ -52,7 +52,7 @@ export default function TechnicianCard({ tech, professionLabels }) {
       </div>
       
       {/* Contenu de la carte */}
-      <div className="p-4">
+      <div className="p-4 flex-1 flex flex-col">
         {/* En-tête avec avatar et nom */}
         <div className="flex items-center space-x-3 mb-3">
           <motion.div
@@ -120,10 +120,11 @@ export default function TechnicianCard({ tech, professionLabels }) {
         <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          className="mt-auto"
         >
           <Link
             to={`/technicians/${tech.id}`}
-            className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-center py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center space-x-2"
+            className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-center py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 flex items-center justify-center space-x-2" // SUPPRIMEZ shadow-md hover:shadow-lg
           >
             <MessageCircle className="w-3 h-3" />
             <span>Contacter</span>

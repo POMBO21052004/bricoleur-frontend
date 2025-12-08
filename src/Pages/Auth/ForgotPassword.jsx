@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import api from "../../services/api";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import logo from '../../assets/images2/bricoleur.png';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,114 +17,132 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     
     if (!email.trim()) {
-      setError("Veuillez entrer votre adresse email.");
+      toast.error("Veuillez entrer votre adresse email.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
       return;
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       const response = await api.post("/manage_users/password-reset/", { email });
       
-      setSuccess(true);
-      // Stocker l'email pour la page suivante si nécessaire
       localStorage.setItem("resetEmail", email);
+      
+      toast.success(response.data.message || "Email envoyé ! Vérifiez votre boîte de réception.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
+      setTimeout(() => {
+        navigate("/reset-password/verify-code");
+      }, 1500);
       
     } catch (error) {
       console.error("Password reset request failed:", error);
       const errorMessage = error.response?.data?.message || 
                           "Erreur lors de l'envoi de l'email de réinitialisation.";
-      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  if (success) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="h-8 w-8 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Email envoyé !</h2>
-          <p className="text-gray-600 mb-4">
-            Un lien de réinitialisation a été envoyé à {email}. 
-            Vérifiez votre boîte de réception.
-          </p>
-          <Link
-            to="/reset-password/verify-code"
-            className="inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
-          >
-            Vérifier le code
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <Link to="/login" className="inline-flex items-center text-sm text-green-600 hover:text-green-700 mb-6">
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Retour à la connexion
-        </Link>
-
-        <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="h-6 w-6 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900">Mot de passe oublié</h2>
-          <p className="text-sm text-gray-600 mt-2">
-            Entrez votre email pour recevoir un code de réinitialisation
-          </p>
-        </div>
-
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+    <>
+      <ToastContainer />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 border border-emerald-100">
+          {/* Logo Header */}
+          <div className="mb-6">
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              <div className="w-12 h-12 rounded-lg overflow-hidden">
+                <img 
+                  src={logo}
+                  alt="Le Bricoleur"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="votre@email.com"
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                required
-              />
+              <div className="text-center">
+                <h1 className="text-xl font-bold text-gray-900">Le Bricoleur</h1>
+                <p className="text-sm text-gray-600">Services professionnels</p>
+              </div>
+            </div>
+            
+            <div className="mb-4 text-center">
+              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail className="h-8 w-8 text-emerald-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Mot de passe oublié</h2>
+              <p className="text-gray-600 text-sm">
+                Entrez votre email pour recevoir un code de réinitialisation
+              </p>
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          {/* Formulaire */}
+          <motion.form 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            onSubmit={handleSubmit} 
+            className="space-y-4"
           >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Envoi...
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="votre@email.com"
+                  className="w-full pl-10 pr-4 py-3 text-base border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all"
+                  required
+                />
               </div>
-            ) : (
-              "Envoyer le code"
-            )}
-          </button>
-        </form>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Envoi...</span>
+                </div>
+              ) : (
+                <span className="flex items-center justify-center space-x-2">
+                  <Sparkles className="w-5 h-5" />
+                  <span>Envoyer le code</span>
+                </span>
+              )}
+            </motion.button>
+          </motion.form>
+
+          {/* Lien retour */}
+          <div className="mt-6 text-center">
+            <Link 
+              to="/login" 
+              className="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Retour à la connexion
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

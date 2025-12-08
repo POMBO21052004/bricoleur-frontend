@@ -38,7 +38,11 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       setToken(null);
+      // Nettoyer tous les éléments d'authentification du localStorage
       localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("full_name");
     }
   };
 

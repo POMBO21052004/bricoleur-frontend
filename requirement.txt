@@ -14,3 +14,5 @@ npm install @fullcalendar
 npm install @fullcalendar/core
 npm install @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/interaction
 npm install @fullcalendar/list @fullcalendar/rrule
+
+npm install react-toastify

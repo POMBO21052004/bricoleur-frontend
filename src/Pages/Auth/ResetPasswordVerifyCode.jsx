@@ -7,11 +7,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../../assets/images2/bricoleur.png';
 
-export default function VerifyEmailPage() {
+export default function ResetPasswordVerifyCodePage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,17 +28,21 @@ export default function VerifyEmailPage() {
     setLoading(true);
 
     try {
-      const response = await api.post("/manage_users/verify-email/", { code });
+      const response = await api.post("/manage_users/password-reset-confirm/", { code });
       
-      setSuccess(true);
-      toast.success("Email vérifié avec succès !", {
+      if (response.data.token && response.data.uidb64) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("uidb64", response.data.uidb64);
+      }
+      
+      toast.success("Code vérifié avec succès !", {
         position: "top-right",
         autoClose: 2000,
       });
       
       setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+        navigate("/reset-password");
+      }, 1500);
       
     } catch (error) {
       console.error("Verification failed:", error);
@@ -57,25 +60,22 @@ export default function VerifyEmailPage() {
   const handleResendCode = async () => {
     setResending(true);
     try {
-      const email = localStorage.getItem("email");
+      const email = localStorage.getItem("resetEmail");
       if (email) {
-        await api.post("/manage_users/resend-verification-code/", { email });
+        await api.post("/manage_users/password-reset/", { email });
         toast.success("Code renvoyé ! Vérifiez votre email.", {
           position: "top-right",
           autoClose: 3000,
         });
       } else {
-        toast.error("Email non trouvé. Veuillez vous réinscrire.", {
+        toast.error("Email non trouvé. Veuillez recommencer le processus.", {
           position: "top-right",
           autoClose: 4000,
         });
-        navigate("/register");
+        navigate("/forgot-password");
       }
     } catch (error) {
-      console.error("Resend code failed:", error);
-      const errorMessage = error.response?.data?.message || 
-                          "Erreur lors de l'envoi du code.";
-      toast.error(errorMessage, {
+      toast.error("Erreur lors de l'envoi du code.", {
         position: "top-right",
         autoClose: 4000,
       });
@@ -83,26 +83,6 @@ export default function VerifyEmailPage() {
       setResending(false);
     }
   };
-
-  if (success) {
-    return (
-      <>
-        <ToastContainer />
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4">
-          <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-emerald-100 text-center">
-            <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Mail className="h-10 w-10 text-emerald-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Email vérifié !</h2>
-            <p className="text-gray-600 mb-6">
-              Votre email a été vérifié avec succès. Redirection vers la page de connexion...
-            </p>
-            <div className="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto"></div>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   return (
     <>
@@ -129,7 +109,7 @@ export default function VerifyEmailPage() {
               <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail className="h-8 w-8 text-emerald-600" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Vérification d'email</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Vérification du code</h2>
               <p className="text-gray-600 text-sm">
                 Entrez le code de vérification envoyé à votre email
               </p>

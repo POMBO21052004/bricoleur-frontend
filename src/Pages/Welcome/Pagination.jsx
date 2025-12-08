@@ -13,7 +13,7 @@ export default function Pagination({
       <button
         onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
         disabled={!previousPage}
-        className="p-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
       >
         <ChevronLeft className="w-4 h-4" />
       </button>

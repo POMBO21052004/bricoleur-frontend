@@ -31,10 +31,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
       animate={{ opacity: 1 }}
       className="pt-20 w-full relative overflow-hidden min-h-screen flex items-end lg:items-center"
       style={{
-        backgroundImage: `url(${heroBackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundColor: '#B6E9D4', 
       }}
     >
       {/* Overlay gradient amélioré */}
@@ -107,7 +104,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                 className="space-y-4"
               >
                 <p className="text-2xl md:text-3xl text-gray-900 leading-relaxed max-w-2xl font-normal">
-                  Découvrez notre réseau de 
+                  Découvrez notre réseau de
                   <span className="font-bold text-emerald-700"> techniciens qualifiés</span> 
                   <span> disponibles près de chez vous pour tous vos projets de </span>
                   <span className="font-bold text-green-700"> réparation et rénovation</span>.

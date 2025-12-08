@@ -1,7 +1,7 @@
 // TechniciansSection.jsx - Version améliorée
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Hammer, Download, Sparkles, Filter, Users } from 'lucide-react';
+import { Hammer, Download, Sparkles, Filter, Users, X } from 'lucide-react';
 import SearchBar from './SearchBar';
 import CategoryFilter from './CategoryFilter';
 import TechnicianCard from './TechnicianCard';
@@ -23,6 +23,8 @@ export default function TechniciansSection({
   professionLabels,
   formatPrice
 }) {
+  const [showAppPopup, setShowAppPopup] = useState(true);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -50,21 +52,31 @@ export default function TechniciansSection({
           className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-8"
         >
           <div className="flex-1 space-y-4">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-emerald-100 rounded-xl">
-                <Users className="w-6 h-6 text-emerald-600" />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-emerald-100 rounded-xl">
+                  <Users className="w-6 h-6 text-emerald-600" />
+                </div>
+                <motion.h2 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="text-4xl lg:text-5xl font-bold text-gray-900"
+                >
+                  Nos Experts{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-700">
+                    Qualifiés
+                  </span>
+                </motion.h2>
               </div>
-              <motion.h2 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="text-4xl lg:text-5xl font-bold text-gray-900"
-              >
-                Nos Experts{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-700">
-                  Qualifiés
-                </span>
-              </motion.h2>
+              
+              {/* Barre de recherche sur la même ligne (desktop) */}
+              <div className="hidden lg:block w-96">
+                <SearchBar 
+                  searchQuery={searchQuery} 
+                  setSearchQuery={setSearchQuery} 
+                />
+              </div>
             </div>
             
             <motion.div 
@@ -85,6 +97,14 @@ export default function TechniciansSection({
               Découvrez notre réseau de <span className="font-semibold text-emerald-600">techniciens certifiés</span> prêts à vous accompagner dans tous vos projets de réparation et rénovation.
             </motion.p>
 
+            {/* Barre de recherche mobile */}
+            <div className="lg:hidden mt-6">
+              <SearchBar 
+                searchQuery={searchQuery} 
+                setSearchQuery={setSearchQuery} 
+              />
+            </div>
+
             {/* Stats en ligne */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -103,45 +123,6 @@ export default function TechniciansSection({
               </div>
             </motion.div>
           </div>
-          
-          {/* Section téléchargement app mobile avec animations */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-3xl p-6 border border-emerald-200 shadow-xl hover:shadow-2xl transition-all duration-500"
-          >
-            <div className="flex items-center space-x-4">
-              <motion.div 
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="bg-emerald-500 p-4 rounded-2xl shadow-lg"
-              >
-                <Download className="w-8 h-8 text-white" />
-              </motion.div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg mb-1">Notre App Mobile</h3>
-                <p className="text-gray-600 text-sm mb-3">Commandez en un clic, suivez en temps réel</p>
-                <div className="flex space-x-2">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 shadow-md"
-                  >
-                    App Store
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 shadow-md"
-                  >
-                    Play Store
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Filtres avec animations */}
@@ -153,7 +134,7 @@ export default function TechniciansSection({
           transition={{ delay: 0.6 }}
           className="mb-12"
         >
-          <div
+          {/* <div
             id="services-section" 
             className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
@@ -164,13 +145,11 @@ export default function TechniciansSection({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
+              className="hidden lg:block"
             >
-              <SearchBar 
-                searchQuery={searchQuery} 
-                setSearchQuery={setSearchQuery} 
-              />
+             // Espace ou etait la barre de recherche
             </motion.div>
-          </div>
+          </div> */}
           
           <CategoryFilter 
             selectedCategory={selectedCategory} 
@@ -194,28 +173,29 @@ export default function TechniciansSection({
           <>
             <AnimatePresence>
               {filteredTechnicians.length > 0 ? (
-                <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredTechnicians.map((tech, index) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {filteredTechnicians.map((tech, index) => (
                     <motion.div
-                    key={tech.id}
-                    variants={{
+                      key={tech.id}
+                      variants={{
                         hidden: { opacity: 0, y: 20 },
                         visible: { opacity: 1, y: 0 }
-                    }}
-                    transition={{ delay: index * 0.1 }}
+                      }}
+                      transition={{ delay: index * 0.1 }}
+                      className="h-full"
                     >
-                    <TechnicianCard 
+                      <TechnicianCard 
                         tech={tech}
                         professionLabels={professionLabels}
-                    />
+                      />
                     </motion.div>
-                ))}
-                </motion.div>
+                  ))}
+                </div>
               ) : (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-20 bg-white rounded-3xl border border-emerald-200 shadow-xl"
+                  className="text-center py-20 bg-white rounded-3xl border border-emerald-200"
                 >
                   <motion.div
                     animate={{ 
@@ -237,7 +217,7 @@ export default function TechniciansSection({
                       setSearchQuery('');
                       setSelectedCategory('all');
                     }}
-                    className="bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300"
                   >
                     Voir tous les techniciens
                   </motion.button>
@@ -265,6 +245,45 @@ export default function TechniciansSection({
           </>
         )}
       </div>
+
+      {/* Popup d'application mobile flottant */}
+      {showAppPopup && (
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
+          className="fixed bottom-6 right-6 z-50"
+        >
+          <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-2xl p-4 border border-emerald-200 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-gray-900 text-sm">Notre App Mobile</h3>
+              <button
+                onClick={() => setShowAppPopup(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-gray-600 text-xs mb-3">Commandez en un clic, suivez en temps réel</p>
+            <div className="flex space-x-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gray-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
+              >
+                App Store
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
+              >
+                Play Store
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </motion.section>
   );
 }

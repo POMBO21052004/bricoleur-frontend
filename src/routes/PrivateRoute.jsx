@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const LoadingSpinner = () => (
@@ -12,18 +12,16 @@ const LoadingSpinner = () => (
 
 export default function PrivateRoute({ children }) {
   const { user, initializing } = useAuth();
+  const location = useLocation();
 
   if (initializing) {
     return <LoadingSpinner />;
   }
 
-  return user ? children : <Navigate to="/login" />;
-
-  // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-  // if (!user) {
-  //   return <Navigate to="/login" replace />;
-  // }
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
   // Si l'utilisateur est connecté, afficher le contenu
-  // return children;
+  return children;
 }

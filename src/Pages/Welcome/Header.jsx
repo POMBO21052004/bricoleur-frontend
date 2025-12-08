@@ -67,10 +67,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex justify-between items-center py-4">
           {/* Logo amélioré */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <motion.div>
             <Link to="/" className="flex items-center space-x-3">
               <div className="relative">
                 <div className="w-12 h-12 from-emerald-500 flex items-center justify-center">
