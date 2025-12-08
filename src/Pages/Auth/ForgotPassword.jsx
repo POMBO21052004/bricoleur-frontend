@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail } from "lucide-react";
 import api from "../../services/api";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,44 +26,36 @@ export default function ForgotPasswordPage() {
     try {
       const response = await api.post("/manage_users/password-reset/", { email });
       
-      setSuccess(true);
       // Stocker l'email pour la page suivante si nécessaire
       localStorage.setItem("resetEmail", email);
+      
+      toast.success(response.data.message || "Email envoyé ! Vérifiez votre boîte de réception.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
+      // Redirection vers la page de vérification du code
+      setTimeout(() => {
+        navigate("/reset-password/verify-code");
+      }, 1500);
       
     } catch (error) {
       console.error("Password reset request failed:", error);
       const errorMessage = error.response?.data?.message || 
                           "Erreur lors de l'envoi de l'email de réinitialisation.";
       setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  if (success) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="h-8 w-8 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Email envoyé !</h2>
-          <p className="text-gray-600 mb-4">
-            Un lien de réinitialisation a été envoyé à {email}. 
-            Vérifiez votre boîte de réception.
-          </p>
-          <Link
-            to="/reset-password/verify-code"
-            className="inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
-          >
-            Vérifier le code
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
+    <>
+      <ToastContainer />
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <Link to="/login" className="inline-flex items-center text-sm text-green-600 hover:text-green-700 mb-6">
@@ -124,5 +117,6 @@ export default function ForgotPasswordPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }

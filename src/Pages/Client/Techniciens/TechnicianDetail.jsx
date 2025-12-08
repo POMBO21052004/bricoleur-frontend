@@ -114,10 +114,10 @@ export default function TechnicianDetail() {
       if (type === 'whatsapp') {
         const phone = technician.user.phone_number.replace(/\D/g, '');
         const message = `Bonjour ${technician.user.first_name}, je suis intéressé par vos services de ${professionLabels[technician.profession] || technician.profession}.`;
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`https://wa.me/+237${phone}?text=${encodeURIComponent(message)}`, '_blank');
         showNotification('Ouverture de WhatsApp en cours...');
       } else if (type === 'call') {
-        window.open(`tel:${technician.user.phone_number}`);
+        window.open(`tel:+237${technician.user.phone_number}`);
         showNotification('Appel en cours...');
       } else if (type === 'email') {
         window.open(`mailto:${technician.user.email}?subject=Demande de service - ${professionLabels[technician.profession]}`);

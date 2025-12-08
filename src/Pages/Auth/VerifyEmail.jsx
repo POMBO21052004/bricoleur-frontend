@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail } from "lucide-react";
 import api from "../../services/api";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function VerifyEmailPage() {
   const [code, setCode] = useState("");
@@ -26,6 +28,11 @@ export default function VerifyEmailPage() {
       const response = await api.post("/manage_users/verify-email/", { code });
       
       setSuccess(true);
+      toast.success("Email vérifié avec succès !", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -35,6 +42,10 @@ export default function VerifyEmailPage() {
       const errorMessage = error.response?.data?.message || 
                           "Code invalide ou erreur réseau.";
       setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     } finally {
       setLoading(false);
     }
@@ -42,32 +53,57 @@ export default function VerifyEmailPage() {
 
   const handleResendCode = async () => {
     try {
-      // Implémentez la logique pour renvoyer le code
-      // await api.post("/users/resend-otp/", { email });
-      alert("Code renvoyé ! Vérifiez votre email.");
+      const email = localStorage.getItem("email");
+      if (email) {
+        // Appel à l'API pour renvoyer le code de vérification
+        // Note: Vous devrez peut-être ajuster l'endpoint selon votre API
+        await api.post("/manage_users/resend-verification-code/", { email });
+        toast.success("Code renvoyé ! Vérifiez votre email.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error("Email non trouvé. Veuillez vous réinscrire.", {
+          position: "top-right",
+          autoClose: 4000,
+        });
+        navigate("/register");
+      }
     } catch (error) {
-      setError("Erreur lors de l'envoi du code.");
+      console.error("Resend code failed:", error);
+      const errorMessage = error.response?.data?.message || 
+                          "Erreur lors de l'envoi du code.";
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
   };
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="h-8 w-8 text-green-600" />
+      <>
+        <ToastContainer />
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
+          <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Mail className="h-8 w-8 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Email vérifié !</h2>
+            <p className="text-gray-600 mb-4">
+              Votre email a été vérifié avec succès. Redirection vers la page de connexion...
+            </p>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Email vérifié !</h2>
-          <p className="text-gray-600 mb-4">
-            Votre email a été vérifié avec succès. Redirection vers la page de connexion...
-          </p>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
+    <>
+      <ToastContainer />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-green-100 to-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <Link to="/login" className="inline-flex items-center text-sm text-green-600 hover:text-green-700 mb-6">
           <ArrowLeft className="h-4 w-4 mr-1" />
@@ -133,5 +169,6 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import VerifyEmail from "../Pages/Auth/VerifyEmail";
 import ForgotPassword from "../Pages/Auth/ForgotPassword";
+import ResetPasswordVerifyCode from "../Pages/Auth/ResetPasswordVerifyCode";
 import ResetPassword from "../Pages/Auth/ResetPassword";
 
 // Pages principales
@@ -29,8 +30,9 @@ export default function AppRouter() {
         
         <Route path="/login" element={ <PublicRoute> <Login /> </PublicRoute>} />
         <Route path="/register" element={ <PublicRoute> <Register /> </PublicRoute> } />
-        <Route path="/reset-password/verify-email" element={ <PublicRoute> <VerifyEmail /> </PublicRoute> } /> 
+        <Route path="/verify-email" element={ <PublicRoute> <VerifyEmail /> </PublicRoute> } /> 
         <Route path="/forgot-password" element={<PublicRoute> <ForgotPassword /> </PublicRoute> } />
+        <Route path="/reset-password/verify-code" element={ <PublicRoute> <ResetPasswordVerifyCode /> </PublicRoute> } />
         <Route path="/reset-password" element={ <PublicRoute> <ResetPassword /> </PublicRoute> } />
 
         {/* === ROUTES PRIVÉES (nécessitent une connexion) === */}

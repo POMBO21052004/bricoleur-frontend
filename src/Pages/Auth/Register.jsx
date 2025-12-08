@@ -40,6 +40,17 @@ export default function RegisterPage() {
     try {
       const response = await api.post("/manage_users/register/", form);
       
+      // Stocker les informations dans le localStorage (comme dans Next.js)
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+      }
+      if (response.data.email) {
+        localStorage.setItem("email", response.data.email);
+      }
+      if (response.data.full_name) {
+        localStorage.setItem("full_name", response.data.full_name);
+      }
+      
       // Redirection vers la page de vérification d'email
       navigate("/verify-email");
       
