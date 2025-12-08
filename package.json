@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    
+    "docker:dev": "docker-compose up",
+    "docker:build": "docker build -t frontend-app .",
+    "docker:run": "docker run -p 3000:3000 frontend-app",
+    "docker:prod": "docker build --target production -t frontend-prod . && docker run -p 80:80 frontend-prod"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",
