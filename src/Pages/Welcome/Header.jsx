@@ -72,8 +72,6 @@ export default function Header() {
               <div className="relative">
                 <div className="w-12 h-12 from-emerald-500 flex items-center justify-center">
                   <motion.div
-                    animate={{ rotate: [0, 10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
                     className="text-white font-bold text-lg"
                   >
                     <img 
@@ -93,7 +91,7 @@ export default function Header() {
                 <span className="text-xl font-bold bg-gradient-to-r from-gray-800 to-emerald-700 bg-clip-text text-transparent hidden md:block">
                   Le Bricoleur
                 </span>
-                <span className="text-emerald-300 text-sm hidden md:block">
+                <span className="text-sm hidden md:block">
                   Votre partenaire de confiance
                 </span>
               </div>
