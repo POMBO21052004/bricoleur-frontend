@@ -19,7 +19,8 @@ export default function PrivateRoute({ children }) {
   }
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    // Stocker la location actuelle pour rediriger après login
+    return <Navigate to="/login" state={{ from: location.pathname + location.search }} replace />;
   }
 
   // Si l'utilisateur est connecté, afficher le contenu

@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
     try {
       const response = await api.post("/manage_users/password-reset/", { email });
       
-      localStorage.setItem("resetEmail", email);
+      localStorage.setItem("email", email);
       
       toast.success(response.data.message || "Email envoyé ! Vérifiez votre boîte de réception.", {
         position: "top-right",
