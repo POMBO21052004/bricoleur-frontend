@@ -1,4 +1,3 @@
-// TechnicianCard.jsx - Version améliorée et épurée
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -6,10 +5,20 @@ import { MapPin, Phone, Star, Clock, Award, MessageCircle } from 'lucide-react';
 import placeholder from '../../assets/images2/placeholder2.jpeg';
 
 export default function TechnicianCard({ tech, professionLabels }) {
+
   const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const sum = reviews.reduce((acc, review) => acc + review.rate, 0);
     return (sum / reviews.length).toFixed(1);
+  };
+
+  const getGradeColor = (grade) => {
+      const colors = {
+      'G3': 'bg-gradient-to-br from-amber-800 via-amber-700 to-amber-900', // Cuivre profond
+      'G2': 'bg-gradient-to-br from-gray-700 via-gray-100 to-gray-500', // Argent brillant
+      'G1': 'bg-gradient-to-br from-yellow-300 via-yellow-200 to-yellow-400', // Or éclatant
+    };
+    return colors[grade] || 'bg-gradient-to-br from-gray-500 to-gray-700';
   };
 
   const avgRating = calculateAverageRating(tech.reviews_received);
@@ -33,7 +42,20 @@ export default function TechnicianCard({ tech, professionLabels }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         
         {/* Badges */}
-        <div className="absolute top-3 right-3 flex flex-col space-y-1">
+        <div className="absolute top-3 right-3 flex items-center space-x-2">
+          {/* Badge Grade - Octagone */}
+          {tech.grade && (
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              className={`octagon-badge w-8 h-8 ${getGradeColor(tech.grade)} shadow-lg`}
+              title={`Grade ${tech.grade}`}
+            >
+              <span className="text-xs font-bold text-white">{tech.grade}</span>
+            </motion.div>
+          )}
+
           {isVerified && (
             <motion.div
               initial={{ scale: 0 }}
@@ -44,7 +66,6 @@ export default function TechnicianCard({ tech, professionLabels }) {
               <span>Vérifié</span>
             </motion.div>
           )}
-          
         </div>
 
         {/* Effet de brillance au hover */}
@@ -131,6 +152,49 @@ export default function TechnicianCard({ tech, professionLabels }) {
           </Link>
         </motion.div>
       </div>
+
+      <style jsx="true">{`
+        /* Hexagone à 8 côtés */
+        .octagon-badge {
+          clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          font-weight: bold;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Variante avec effet 3D */
+        .octagon-badge-3d {
+          position: relative;
+          width: 42px;
+          height: 42px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .octagon-badge-3d::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+          z-index: 1;
+        }
+
+        .octagon-badge-3d .octagon-text {
+          position: relative;
+          z-index: 2;
+          font-weight: bold;
+          color: white;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+      `}</style>
+
     </motion.div>
   );
 }
