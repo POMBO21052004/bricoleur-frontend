@@ -52,7 +52,7 @@ export default function TechnicianCard({ tech, professionLabels }) {
               className={`octagon-badge w-8 h-8 ${getGradeColor(tech.grade)} shadow-lg`}
               title={`Grade ${tech.grade}`}
             >
-              <span className="text-xs font-bold text-white">{tech.grade}</span>
+              <span className="text-xs font-bold text-black">{tech.grade}</span>
             </motion.div>
           )}
 
