@@ -1,0 +1,19 @@
+# .dockerignore
+node_modules
+npm-debug.log
+dist
+build
+.DS_Store
+.git
+.gitignore
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vercel
+.vscode
+.idea
+*.md
+docker-compose*.yml
+Dockerfile*
+README.md
