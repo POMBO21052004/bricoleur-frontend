@@ -89,7 +89,12 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       if (token) {
-        await api.post("/logout");
+        setUser(null);
+        setToken(null);
+        setError(null);
+        
+        // Nettoyer le localStorage
+        localStorage.removeItem("token");
       }
     } catch (error) {
       console.error("Erreur lors de la déconnexion :", error);

@@ -26,7 +26,7 @@ export default function LoginPage() {
   const location = useLocation();
   
   // Récupérer la page précédente depuis l'état de location
-  const from = location.state?.from || "/dashboard";
+  const from = location.state?.from || "/";
 
   const slides = [
     {
