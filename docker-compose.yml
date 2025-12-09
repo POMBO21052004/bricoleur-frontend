@@ -14,5 +14,6 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - BROWSER=none
     stdin_open: true
     tty: true
