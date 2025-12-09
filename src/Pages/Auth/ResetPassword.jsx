@@ -21,14 +21,15 @@ export default function ResetPasswordPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUidb64 = localStorage.getItem("uidb64");
-    const storedToken = localStorage.getItem("token");
+    const uidb64 = localStorage.getItem("uidb64");
+    const token = localStorage.getItem("token");
+    localStorage.removeItem("email");
 
-    if (storedUidb64 && storedToken) {
+    if (uidb64 && token) {
       setForm(prev => ({
         ...prev,
-        uidb64: storedUidb64,
-        token: storedToken
+        uidb64: uidb64,
+        token: token
       }));
     } else {
       toast.error("Données de vérification manquantes. Veuillez recommencer le processus.", {
@@ -74,9 +75,8 @@ export default function ResetPasswordPage() {
         token: form.token
       });
       
-      localStorage.removeItem("uidb64");
+      localStorage.removeItem("uidb64"); 
       localStorage.removeItem("token");
-      localStorage.removeItem("resetEmail");
       
       toast.success("Mot de passe réinitialisé avec succès !", {
         position: "top-right",

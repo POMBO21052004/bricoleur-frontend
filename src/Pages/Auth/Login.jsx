@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "../../contexts/AuthContext";
@@ -23,6 +23,10 @@ export default function LoginPage() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Récupérer la page précédente depuis l'état de location
+  const from = location.state?.from || "/dashboard";
 
   const slides = [
     {
@@ -76,13 +80,10 @@ export default function LoginPage() {
       });
 
       // Stocker les informations dans le localStorage
-      const { access_token, refresh_token, email, full_name } = response.data;
+      const { access_token } = response.data;
       
       // Stocker les informations de l'utilisateur
       localStorage.setItem("token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("email", email);
-      localStorage.setItem("full_name", full_name);
       
       await login(access_token);
       
@@ -92,7 +93,7 @@ export default function LoginPage() {
       });
       
       setTimeout(() => {
-        navigate("/");
+        navigate(from, { replace: true });
       }, 1500);
       
     } catch (error) {

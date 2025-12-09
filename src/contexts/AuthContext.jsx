@@ -3,28 +3,86 @@ import api from "../services/api";
 
 const AuthContext = createContext();
 
+// Export séparé du hook useAuth
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth doit être utilisé à l'intérieur d'un AuthProvider");
+  }
+  return context;
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [initializing, setInitializing] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fonction pour récupérer les informations utilisateur via l'API
+  const fetchUserFromAPI = async (authToken) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Utiliser l'API pour récupérer les informations utilisateur
+      const response = await api.get("/manage_users/auth/profile/");
+      
+      if (response.data) {
+        const userData = {
+          ...response.data,
+          full_name: `${response.data.first_name} ${response.data.last_name || ''}`.trim()
+        };
+        
+        setUser(userData);
+        setToken(authToken);
+        
+        // Stocker seulement le token dans localStorage
+        localStorage.setItem("token", authToken);
+        
+        return userData;
+      }
+      return null;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données utilisateur :", error);
+      
+      // Gérer les différentes erreurs
+      if (error.response?.status === 401) {
+        setError("Session expirée. Veuillez vous reconnecter.");
+        logout();
+      } else if (error.response?.status === 404) {
+        setError("Route de profil utilisateur non trouvée.");
+      } else {
+        setError("Erreur lors du chargement du profil utilisateur.");
+      }
+      
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (authToken) => {
-    if (authToken) {
-      setToken(authToken);
+    if (!authToken) {
+      setError("Token d'authentification manquant.");
+      return false;
+    }
+
+    try {
+      // Tenter de récupérer les informations utilisateur avec le token
+      const userData = await fetchUserFromAPI(authToken);
       
-      // Récupérer les informations de l'utilisateur depuis le localStorage
-      const email = localStorage.getItem("email");
-      const fullName = localStorage.getItem("full_name");
-      
-      if (email && fullName) {
-        setUser({
-          email,
-          full_name: fullName
-        });
+      if (userData) {
+        setToken(authToken);
+        setUser(userData);
+        setError(null);
+        return true;
       }
-    } else {
-      logout();
+      return false;
+    } catch (error) {
+      console.error("Erreur lors de la connexion :", error);
+      setError("Erreur d'authentification. Veuillez réessayer.");
+      return false;
     }
   };
 
@@ -38,87 +96,38 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       setToken(null);
-      // Nettoyer tous les éléments d'authentification du localStorage
+      setError(null);
+      
+      // Nettoyer le localStorage
       localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("email");
-      localStorage.removeItem("full_name");
     }
   };
 
-  const fetchUser = async () => {
+  const refreshUser = async () => {
     const storedToken = localStorage.getItem("token");
     
-    if (!storedToken) {
-      setUser(null);
-      setInitializing(false);
-      return;
+    if (storedToken) {
+      return await fetchUserFromAPI(storedToken);
     }
-
-    try {
-      setLoading(true);
-      
-      // Vérifier si on a déjà les informations utilisateur dans le localStorage
-      const email = localStorage.getItem("email");
-      const fullName = localStorage.getItem("full_name");
-      
-      if (email && fullName) {
-        setUser({
-          email,
-          full_name: fullName
-        });
-        setToken(storedToken);
-      } else {
-        // Si les informations ne sont pas dans le localStorage, essayer de les récupérer depuis l'API
-        // Note: Cette partie est pour plus tard quand l'API sera disponible
-        // const response = await api.get("/users/profile/");
-        // const userData = response.data;
-        // setUser(userData);
-        // setToken(storedToken);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération de l'utilisateur :", error);
-      
-      // En cas d'erreur, on garde les informations du localStorage
-      const email = localStorage.getItem("email");
-      const fullName = localStorage.getItem("full_name");
-      
-      if (email && fullName) {
-        setUser({
-          email,
-          full_name: fullName
-        });
-        setToken(storedToken);
-      } else if (error.response?.status === 401) {
-        logout();
-      }
-    } finally {
-      setLoading(false);
-      setInitializing(false);
-    }
+    return null;
   };
 
-  const refreshUser = () => {
-    fetchUser();
-  };
-
-  // Initialisation au chargement de l'application
+  // Vérifier l'état d'authentification au démarrage
   useEffect(() => {
     const initializeAuth = async () => {
       const storedToken = localStorage.getItem("token");
       
       if (storedToken) {
         try {
-          setToken(storedToken);
-          // Vérifier si le token est toujours valide en récupérant les infos user
-          await fetchUser();
+          // Vérifier si le token est toujours valide
+          await fetchUserFromAPI(storedToken);
         } catch (error) {
           console.error("Erreur lors de l'initialisation :", error);
           logout();
         }
-      } else {
-        setInitializing(false);
       }
+      
+      setInitializing(false);
     };
 
     initializeAuth();
@@ -130,14 +139,13 @@ export const AuthProvider = ({ children }) => {
       token, 
       loading, 
       initializing,
+      error,
       login, 
       logout, 
-      refreshUser,
-      fetchUser 
+      refreshUser
     }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
