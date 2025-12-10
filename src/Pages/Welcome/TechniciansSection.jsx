@@ -1,7 +1,6 @@
-// TechniciansSection.jsx - Version améliorée
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Hammer, Download, Sparkles, Filter, Users, X } from 'lucide-react';
+import { Hammer, Sparkles, Filter, Users } from 'lucide-react';
 import SearchBar from './SearchBar';
 import CategoryFilter from './CategoryFilter';
 import TechnicianCard from './TechnicianCard';
@@ -23,8 +22,6 @@ export default function TechniciansSection({
   professionLabels,
   formatPrice
 }) {
-  const [showAppPopup, setShowAppPopup] = useState(true);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -134,23 +131,6 @@ export default function TechniciansSection({
           transition={{ delay: 0.6 }}
           className="mb-12"
         >
-          {/* <div
-            id="services-section" 
-            className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <Filter className="w-5 h-5 text-emerald-600" />
-              <h3 className="text-lg font-semibold text-gray-900">Filtrer les résultats</h3>
-            </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="hidden lg:block"
-            >
-             // Espace ou etait la barre de recherche
-            </motion.div>
-          </div> */}
-          
           <CategoryFilter 
             selectedCategory={selectedCategory} 
             setSelectedCategory={setSelectedCategory} 
@@ -245,45 +225,6 @@ export default function TechniciansSection({
           </>
         )}
       </div>
-
-      {/* Popup d'application mobile flottant */}
-      {showAppPopup && (
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
-          className="fixed bottom-6 right-6 z-50"
-        >
-          <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-2xl p-4 border border-emerald-200 shadow-lg">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-gray-900 text-sm">Notre App Mobile</h3>
-              <button
-                onClick={() => setShowAppPopup(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-gray-600 text-xs mb-3">Commandez en un clic, suivez en temps réel</p>
-            <div className="flex space-x-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gray-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
-              >
-                App Store
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
-              >
-                Play Store
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      )}
     </motion.section>
   );
 }

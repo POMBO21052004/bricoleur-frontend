@@ -208,7 +208,7 @@ export default function RegisterPage() {
                     type="tel"
                     value={form.phone_number}
                     onChange={handleChange}
-                    placeholder="+237 XXX XX XX XX"
+                    placeholder="XXX XX XX XX"
                     className="w-full pl-10 pr-4 py-3 text-base border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-all"
                   />
                 </div>
