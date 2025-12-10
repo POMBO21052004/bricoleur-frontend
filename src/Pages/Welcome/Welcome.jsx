@@ -9,6 +9,7 @@ import Hero from './Hero';
 import TechniciansSection from './TechniciansSection';
 import ContactForm from './ContactForm';
 import Footer from './Footer';
+import AppPopup from '../../components/AppPopup';
 
 export default function Welcome() {
   const [technicians, setTechnicians] = useState([]);
@@ -115,6 +116,8 @@ export default function Welcome() {
       />
 
       <ContactForm />
+
+      <AppPopup />
       
       <Footer />
     </motion.div>
