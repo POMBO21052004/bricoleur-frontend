@@ -1,10 +1,12 @@
-// Footer.jsx - Version améliorée
+// Footer.jsx - Version améliorée avec téléchargement d'application
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Hammer, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { 
+  Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin,
+  Download, Smartphone, AppWindow, Globe
+} from 'lucide-react';
 import logo from '../../assets/images2/bricoleur.png';
-
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,6 +33,25 @@ export default function Footer() {
     { icon: Linkedin, href: '#', label: 'LinkedIn' }
   ];
 
+  const appLinks = [
+    {
+      platform: 'App Store',
+      icon: AppWindow,
+      href: '#',
+      bgColor: 'bg-gray-900 hover:bg-black',
+      text: 'Disponible sur l\'App Store',
+      subtext: 'Pour iPhone'
+    },
+    {
+      platform: 'Play Store',
+      icon: Smartphone,
+      href: '#',
+      bgColor: 'bg-emerald-600 hover:bg-emerald-700',
+      text: 'Disponible sur Google Play',
+      subtext: 'Pour Android'
+    },
+  ];
+
   return (
     <motion.footer 
       initial={{ opacity: 0 }}
@@ -40,7 +61,7 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Section principale */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-6 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-7 gap-12">
           {/* Brand Section */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -142,6 +163,53 @@ export default function Footer() {
             </motion.div>
           ))}
 
+          {/* Téléchargement de l'application */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="xl:col-span-2 space-y-6"
+          >
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="p-2 bg-emerald-800 rounded-xl">
+                <Download className="w-5 h-5 text-emerald-300" />
+              </div>
+              <h3 className="text-lg font-semibold text-white">Notre Application</h3>
+            </div>
+            
+            <p className="text-emerald-200 text-sm mb-6">
+              Téléchargez notre application pour une expérience optimale. Commandez en un clic, 
+              suivez vos services en temps réel et profitez d'offres exclusives.
+            </p>
+
+            {/* Boutons de téléchargement */}
+            <div className="space-y-3">
+              {appLinks.map((app, index) => (
+                <motion.a
+                  key={app.platform}
+                  href={app.href}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + (index * 0.1) }}
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  className={`flex items-center space-x-3 ${app.bgColor} text-white p-3 rounded-xl transition-all duration-300 group`}
+                >
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <app.icon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-sm">{app.text}</div>
+                    <div className="text-xs opacity-90">{app.subtext}</div>
+                  </div>
+                  <Download className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.a>
+              ))}
+            </div>
+
+          </motion.div>
+
           {/* Newsletter */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -163,7 +231,7 @@ export default function Footer() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg"
+                className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white py-3 rounded-xl font-semibold transition-all duration-300"
               >
                 S'abonner
               </motion.button>

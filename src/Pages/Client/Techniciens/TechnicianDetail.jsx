@@ -113,7 +113,7 @@ export default function TechnicianDetail() {
       // Gérer le type de contact
       if (type === 'whatsapp') {
         const phone = technician.user.phone_number.replace(/\D/g, '');
-        const message = `Bonjour ${technician.user.first_name}, je suis intéressé par vos services de ${professionLabels[technician.profession] || technician.profession}.`;
+        const message = `*Bonjour Monsieur ${technician.user.first_name}*,%0A%0AJ'ai vu votre profil sur la plateforme LeBricoleur et je suis intéressé par vos services.%0A%0APouvez-vous, s'il vous plaît, me donner votre disponibilité ???`;
         window.open(`https://wa.me/+237${phone}?text=${encodeURIComponent(message)}`, '_blank');
         showNotification('Ouverture de WhatsApp en cours...');
       } else if (type === 'call') {

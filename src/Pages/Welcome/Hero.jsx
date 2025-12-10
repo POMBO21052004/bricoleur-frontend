@@ -1,17 +1,43 @@
-// Hero.jsx - Version améliorée
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Download, Smartphone, Star, Users, Award, Clock } from 'lucide-react';
-import heroBackground from '../../assets/images2/fond.png'; 
+import { Search, Star, Users, Award, Clock } from 'lucide-react';
 import heroMain from '../../assets/images2/ingenieur2_removebg.png';
 
-export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) {
+export default function Hero({ 
+  totalCount, 
+  user, 
+  searchQuery, 
+  setSearchQuery,
+  satisfactionRate,  
+  certifiedPercentage, 
+  projectsCompleted 
+}) {
+  // Statistiques dynamiques
   const stats = [
-    { icon: Users, value: `${totalCount}+`, label: 'Techniciens' },
-    { icon: Star, value: '4.9/5', label: 'Satisfaction' },
-    { icon: Award, value: '100%', label: 'Certifiés' },
-    { icon: Clock, value: '24h', label: 'Rapidité' }
+    { 
+      icon: Users, 
+      value: `${totalCount || 0}`, 
+      label: 'Techniciens',
+      tooltip: 'Total des techniciens actifs'
+    },
+    { 
+      icon: Star, 
+      value: `${satisfactionRate || '?'}/5`, 
+      label: 'Satisfaction',
+      tooltip: 'Note moyenne basée sur les avis clients'
+    },
+    { 
+      icon: Award, 
+      value: `${certifiedPercentage || '?'} %`, 
+      label: 'Certifiés',
+      tooltip: 'Pourcentage de techniciens avec grade'
+    },
+    { 
+      icon: Clock, 
+      value: '1h', 
+      label: 'Rapidité',
+      tooltip: 'Temps moyen de réponse'
+    }
   ];
 
   const scrollToTechnicians = () => {
@@ -22,6 +48,13 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
         block: 'start' 
       });
     }
+  };
+
+  // Formater le nombre de projets
+  const formatProjects = (count) => {
+    if (!count) return '500+';
+    if (count >= 1000) return `${(count/1000).toFixed(1)}k+`;
+    return `${count}+`;
   };
 
   return (
@@ -84,18 +117,6 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                   professionnel
                 </motion.span>
               </motion.h1>
-              
-              {/* <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
-                className="text-xl text-gray-700 leading-relaxed max-w-2xl font-light"
-              >
-                Des techniciens <span className="font-semibold text-emerald-600">certifiés et vérifiés</span> près de chez vous pour tous vos besoins en réparation et rénovation.
-                <span className="block mt-3 font-medium text-green-800">
-                  Intervention rapide, travail garanti dans tout le Cameroun.
-                </span>
-              </motion.p> */}
 
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -140,7 +161,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
               </div>
             </motion.div>
 
-            {/* Statistiques */}
+            {/* Statistiques avec tooltips */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -153,18 +174,22 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
-                  className="text-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-green-100 shadow-sm"
+                  className="text-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-green-100 shadow-sm relative group"
+                  title={stat.tooltip}
                 >
-                  <stat.icon className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
-                  <div className="text-lg font-bold text-gray-900">{stat.value}</div>
-                  <div className="text-xs text-gray-600">{stat.label}</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-green-50 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300"></div>
+                  <div className="relative z-10">
+                    <stat.icon className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
+                    <div className="text-lg font-bold text-gray-900">{stat.value}</div>
+                    <div className="text-xs text-gray-600">{stat.label}</div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
 
           </motion.div>
 
-          {/* Image Section - Agrandie pour toucher le bas */}
+          {/* Image Section */}
           <motion.div 
             initial={{ opacity: 0, x: 50, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -190,19 +215,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                   className="h-[500px] lg:h-[600px] xl:h-[700px] object-contain w-full drop-shadow-2xl "
                 />
 
-                {/* Badges flottants */}
-                {/* <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.5, duration: 0.6 }}
-                  className="absolute -top-4 -right-4 bg-white rounded-2xl p-4 shadow-2xl border border-green-200"
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-semibold text-gray-800">Disponible</span>
-                  </div>
-                </motion.div> */}
-
+                {/* Badge de projets réalisés - dynamique */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -210,7 +223,7 @@ export default function Hero({ totalCount, user, searchQuery, setSearchQuery }) 
                   className="absolute bottom-20 -left-8 bg-gradient-to-r from-emerald-600 to-green-700 text-white rounded-2xl p-4 shadow-2xl"
                 >
                   <div className="text-center">
-                    <div className="text-lg font-bold">500+</div>
+                    <div className="text-lg font-bold">{formatProjects(projectsCompleted)}</div>
                     <div className="text-xs">Projets réalisés</div>
                   </div>
                 </motion.div>
